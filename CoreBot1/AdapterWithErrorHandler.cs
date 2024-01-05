@@ -10,6 +10,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 
 namespace CoreBot1
 {
@@ -22,6 +23,7 @@ namespace CoreBot1
             {
                 // Log any leaked exception from the application.
                 logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
+                File.AppendAllText("logs.txt", exception.Message);
 
                 // Send a message to the user
                 var errorMessageText = "The bot encountered an error or bug.";
