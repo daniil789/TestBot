@@ -2,9 +2,10 @@
 {
     public class User
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Channel { get; set; }
+        public bool IsAdmin { get; set; }
 
         public List<Order> Orders { get; set; }
     }

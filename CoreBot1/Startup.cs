@@ -5,6 +5,8 @@
 
 using CoreBot.BLL.Interfaces;
 using CoreBot.BLL.Services;
+using CoreBot.DAL.Intefaces;
+using CoreBot.DAL.Repositories;
 using CoreBot1.Bots;
 using CoreBot1.Dialogs;
 using Microsoft.AspNetCore.Builder;
@@ -42,10 +44,12 @@ namespace CoreBot1
             });
 
             // Регистрация репозитория и сервиса для работы с пользователями
-
+            
             // Регистрация репозитория и сервиса для работы с играми
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IKeyRepository, KeyRepository>();
+            services.AddScoped<IKeyService, KeyService>(); 
             // Create the Bot Framework Authentication to be used with the Bot Adapter.
             services.AddSingleton<BotFrameworkAuthentication, ConfigurationBotFrameworkAuthentication>();
 

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using CoreBot.BLL;
 using CoreBot.BLL.Dto;
 using CoreBot.BLL.Interfaces;
 using CoreBot.DAL.Models;
+using HtmlAgilityPack;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 
@@ -86,7 +89,7 @@ public class AddGameDialog : ComponentDialog
 
     private async Task<DialogTurnResult> AskImageUrlStep(WaterfallStepContext stepContext, CancellationToken cancellationToken)
     {
-        stepContext.Values["Price"] = (string)stepContext.Result;
+        stepContext.Values["Price"] = decimal.Parse((string)stepContext.Result);
         return await stepContext.PromptAsync("textPrompt", new PromptOptions
         {
             Prompt = MessageFactory.Text("Введите ссылку на обложку игры:")
@@ -103,7 +106,9 @@ public class AddGameDialog : ComponentDialog
             Description = (string)stepContext.Values["Description"],
             Platform = (string)stepContext.Values["Platform"],
             Developer = (string)stepContext.Values["Developer"],
-            Genre = (string)stepContext.Values["Genre"]
+            Genre = (string)stepContext.Values["Genre"],
+            Price = (decimal)stepContext.Values["Price"],
+            ImageUrl = (string)stepContext.Values["ImageUrl"]
         };
 
         // Получаем сервис из контекста
@@ -112,4 +117,6 @@ public class AddGameDialog : ComponentDialog
         await stepContext.Context.SendActivityAsync(MessageFactory.Text("Игра добавлена!"), cancellationToken);
         return await stepContext.EndDialogAsync(gameDto, cancellationToken);
     }
+
+
 }

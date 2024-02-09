@@ -1,13 +1,17 @@
-﻿namespace CoreBot.DAL.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CoreBot.BLL.Dto
 {
-    public class Key
+    public class KeyDto
     {
         public int Id { get; set; }
         public int GameId { get; set; }
         public string KeyValue { get; set; }
         public bool IsBought { get; set; }
-
-        public Game Game { get; set; }
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
+
 }

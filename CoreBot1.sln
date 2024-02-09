@@ -5,9 +5,11 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBot1", "CoreBot1\CoreBot1.csproj", "{1A416A50-26BC-4C33-A0A1-7CB01DB1533B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreBot.DAL", "CoreBot.DAL\CoreBot.DAL.csproj", "{1F6F2F84-DD82-4DC2-A4E6-D8985E757B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBot.DAL", "CoreBot.DAL\CoreBot.DAL.csproj", "{1F6F2F84-DD82-4DC2-A4E6-D8985E757B1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreBot.BLL", "CoreBot.BLL\CoreBot.BLL.csproj", "{73664056-7D45-4F27-97B3-C995470C0892}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBot.BLL", "CoreBot.BLL\CoreBot.BLL.csproj", "{73664056-7D45-4F27-97B3-C995470C0892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreBot.Test", "CoreBot.Test\CoreBot.Test.csproj", "{6CB51546-C679-4798-A2CB-F830A36A48D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{73664056-7D45-4F27-97B3-C995470C0892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73664056-7D45-4F27-97B3-C995470C0892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73664056-7D45-4F27-97B3-C995470C0892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB51546-C679-4798-A2CB-F830A36A48D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB51546-C679-4798-A2CB-F830A36A48D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB51546-C679-4798-A2CB-F830A36A48D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB51546-C679-4798-A2CB-F830A36A48D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.BLL.Interfaces;
+using CoreBot1.Dialogs;
+using CoreBot1.Options;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -16,7 +18,7 @@ public class GameBot : ActivityHandler
     private readonly BotState _userState;
     private readonly DialogSet _dialogs;
 
-    public GameBot(ConversationState conversationState, UserState userState, IConfiguration configuration, IGameService gameService)
+    public GameBot(ConversationState conversationState, UserState userState, IConfiguration configuration, IGameService gameService, IKeyService keyService)
     {
         _conversationState = conversationState;
         _userState = userState;
@@ -24,10 +26,20 @@ public class GameBot : ActivityHandler
         _dialogs = new DialogSet(_conversationState.CreateProperty<DialogState>(nameof(DialogState)));
 
         _dialogs.Add(new AddGameDialog(gameService));
+        _dialogs.Add(new GetAllGamesDialog(gameService));
+        _dialogs.Add(new AddKeyDialog(keyService));
+        _dialogs.Add(new GetKeysDialog(keyService));
     }
 
     public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
     {
+        File.AppendAllText("LogsRequst", turnContext.Activity.Text);
+
+        var user = turnContext.Activity.From;
+
+        // Доступ к основным данным о пользователе
+        string userId = user.Id;
+        string userName = user.Name;
         try
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
@@ -37,13 +49,31 @@ public class GameBot : ActivityHandler
                 var dialogContext = await _dialogs.CreateContextAsync(turnContext, cancellationToken);
                 var results = await dialogContext.ContinueDialogAsync(cancellationToken);
 
-                if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "Добавить игру")
+                var userMessage = turnContext.Activity.Text.ToLowerInvariant();
+
+                if (userMessage.StartsWith("addkey_"))
+                {
+                    var gameId = int.Parse(userMessage.Replace("addkey_", ""));
+                    await dialogContext.BeginDialogAsync(nameof(AddKeyDialog), new GameOption { GameId = gameId });
+                }
+
+                if (userMessage.StartsWith("getkeys_"))
+                {
+                    var gameId = int.Parse(userMessage.Replace("getkeys_", ""));
+                    await dialogContext.BeginDialogAsync(nameof(GetKeysDialog), new GameOption { GameId = gameId });
+                }
+
+                if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "addgame")
                 {
                     await dialogContext.BeginDialogAsync(nameof(AddGameDialog));
                 }
+                else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "list")
+                {
+                    await dialogContext.BeginDialogAsync(nameof(GetAllGamesDialog));
+                }
                 else
                 {
-                    turnContext.SendActivityAsync("Извините, я вас не понимаю");
+                   // turnContext.SendActivityAsync($"{userName}, Извините, я вас не понимаю");
                 }
 
                 await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);

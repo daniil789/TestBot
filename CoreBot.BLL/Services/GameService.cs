@@ -52,15 +52,26 @@ namespace CoreBot.BLL.Services
 
         private GameDto MapToGameDto(Game game)
         {
-            return new GameDto
+            try
             {
-                Id = game.Id,
-                Title = game.Title,
-                Genre = game.Genre,
-                Developer = game.Developer,
-                Platform = game.Platform,
-                Price = game.Price
-            };
+                return new GameDto
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                    Genre = game.Genre,
+                    Developer = game.Developer,
+                    Platform = game.Platform,
+                    Price = game.Price,
+                    ImageUrl = game.ImageUrl,
+                };
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("ServiceLog.txt", ex.Message);
+                return null;
+            }
+
+
         }
 
         private IEnumerable<GameDto> MapToGameDtoList(IEnumerable<Game> games)
@@ -77,7 +88,8 @@ namespace CoreBot.BLL.Services
                 Genre = gameDto.Genre,
                 Developer = gameDto.Developer,
                 Platform = gameDto.Platform,
-                Price = gameDto.Price
+                Price = gameDto.Price,
+                ImageUrl = gameDto.ImageUrl,
             };
         }
     }
