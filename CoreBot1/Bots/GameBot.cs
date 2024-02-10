@@ -17,12 +17,14 @@ public class GameBot : ActivityHandler
     private readonly BotState _conversationState;
     private readonly BotState _userState;
     private readonly DialogSet _dialogs;
+    private readonly IUserService _userService;
 
-    public GameBot(ConversationState conversationState, UserState userState, IConfiguration configuration, IGameService gameService, IKeyService keyService)
+    public GameBot(ConversationState conversationState, UserState userState, IConfiguration configuration
+                 , IGameService gameService, IKeyService keyService, IUserService userService)
     {
         _conversationState = conversationState;
         _userState = userState;
-
+        _userService = userService;
         _dialogs = new DialogSet(_conversationState.CreateProperty<DialogState>(nameof(DialogState)));
 
         _dialogs.Add(new AddGameDialog(gameService));
@@ -40,6 +42,9 @@ public class GameBot : ActivityHandler
         // Доступ к основным данным о пользователе
         string userId = user.Id;
         string userName = user.Name;
+        var channel = turnContext.Activity.ChannelId;
+
+        await _userService.AddUserIfNotExistAsync(userId, userName, channel);
         try
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
@@ -73,7 +78,7 @@ public class GameBot : ActivityHandler
                 }
                 else
                 {
-                   // turnContext.SendActivityAsync($"{userName}, Извините, я вас не понимаю");
+                    // turnContext.SendActivityAsync($"{userName}, Извините, я вас не понимаю");
                 }
 
                 await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
