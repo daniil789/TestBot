@@ -92,6 +92,12 @@ namespace CoreBot.BLL.Services
                 ImageUrl = gameDto.ImageUrl,
             };
         }
+
+        public IEnumerable<GameDto> SearchGames(string searchString)
+        {
+            var games = _gameRepository.SearchGames(searchString);
+            return MapToGameDtoList(games);
+        }
     }
 
 }

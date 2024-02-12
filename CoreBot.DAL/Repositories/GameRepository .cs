@@ -41,4 +41,16 @@ public class GameRepository : IGameRepository
             _dbContext.SaveChanges();
         }
     }
+
+    public IEnumerable<Game> SearchGames(string searchString)
+    {
+        var matchingGames = _dbContext.Games
+            .Where(game =>
+                game.Title.Contains(searchString) ||
+                game.Genre.Contains(searchString) ||
+                game.Developer.Contains(searchString) ||
+                game.Platform.Contains(searchString))
+            .ToList();
+        return matchingGames;
+    }
 }

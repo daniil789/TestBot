@@ -1,13 +1,16 @@
 ﻿// GameBot.cs
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.BLL.Interfaces;
+using CoreBot.DAL.Models;
 using CoreBot1.Dialogs;
 using CoreBot1.Options;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -31,6 +34,8 @@ public class GameBot : ActivityHandler
         _dialogs.Add(new GetAllGamesDialog(gameService));
         _dialogs.Add(new AddKeyDialog(keyService));
         _dialogs.Add(new GetKeysDialog(keyService));
+        _dialogs.Add(new GetUsersDialog(userService));
+        _dialogs.Add(new SearchGameDialog(gameService));
     }
 
     public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
@@ -72,22 +77,73 @@ public class GameBot : ActivityHandler
                 {
                     await dialogContext.BeginDialogAsync(nameof(AddGameDialog));
                 }
-                else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "list")
+                else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "Вывести список игр")
                 {
                     await dialogContext.BeginDialogAsync(nameof(GetAllGamesDialog));
                 }
+                else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "Пользователи")
+                {
+                    await dialogContext.BeginDialogAsync(nameof(GetUsersDialog));
+                }
+                else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "Мои ключи")
+                {
+                    await dialogContext.BeginDialogAsync(nameof(GetUsersDialog));
+                }
                 else
                 {
-                    // turnContext.SendActivityAsync($"{userName}, Извините, я вас не понимаю");
+                    await dialogContext.BeginDialogAsync(nameof(SearchGameDialog), new CoreBot1.Options.SearchOption { SearchString = turnContext.Activity.Text });
                 }
 
                 await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
                 await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
+
+                var userr = await _userService.GetUserByIdAsync(userId);
+
+                if (dialogContext.ActiveDialog == null)
+                {
+                    await ShowMenuButtons(turnContext, cancellationToken);
+                }
             }
         }
         catch (Exception ex)
         {
             File.AppendAllText("log.txt", ex.Message);
         }
+    }
+
+    private async Task ShowMenuButtons(ITurnContext turnContext, CancellationToken cancellationToken)
+    {
+        var reply = turnContext.Activity.CreateReply();
+        reply.Text = "Выберите действие:";
+
+        var currentUser = await _userService.GetUserByIdAsync(turnContext.Activity.From.Id);
+
+        if (currentUser.IsAdmin)
+        {
+            reply.SuggestedActions = new SuggestedActions
+            {
+                Actions = new List<CardAction>
+        {
+            new CardAction { Title = "Пользователи", Type = ActionTypes.PostBack, Value = "Пользователи" },
+            new CardAction { Title = "Вывести список игр", Type = ActionTypes.PostBack, Value = "Вывести список игр" },
+             new CardAction { Title = "Добавить игру", Type = ActionTypes.PostBack, Value = "addgame" },
+            // Добавьте другие ваши кнопки
+        },
+            };
+        }
+        else
+        {
+            reply.SuggestedActions = new SuggestedActions
+            {
+                Actions = new List<CardAction>
+        {
+            new CardAction { Title = "Мои ключи", Type = ActionTypes.PostBack, Value = "Мои ключи" },
+            new CardAction { Title = "Вывести список игр", Type = ActionTypes.PostBack, Value = "Вывести список игр" },
+            // Добавьте другие ваши кнопки
+        },
+            };
+        }
+
+        await turnContext.SendActivityAsync(reply, cancellationToken);
     }
 }

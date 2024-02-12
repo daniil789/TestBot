@@ -16,4 +16,6 @@ public interface IGameRepository
 
     // Удаление игры по идентификатору
     void DeleteGame(int gameId);
+
+    IEnumerable<Game> SearchGames(string searchString);
 }
