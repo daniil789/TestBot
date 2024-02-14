@@ -1,0 +1,88 @@
+﻿@model CoreBot1.ViewModel.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Оплата";
+}
+
+ 
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f4;
+    }
+
+    .form-container {
+        width: 60%;
+        max-width: 500px;
+        padding: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: #fff;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+
+<div class="form-container">
+    <form asp-action="ProcessPayment" method="post">
+        <div class="form-group">
+            <label asp-for="CardOwner"></label>
+            <input asp-for="CardOwner" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="CardNumber"></label>
+            <input asp-for="CardNumber" class="form-control" required data-inputmask="'mask': '9999 9999 9999 9999'" placeholder="">
+        </div>
+        <div class="form-group">
+            <label asp-for="ExpiryDate"></label>
+            <input asp-for="ExpiryDate" class="form-control" required data-inputmask="'mask': '99/99'" placeholder="">
+        </div>
+        <div class="form-group">
+            <label asp-for="Cvv"></label>
+            <input asp-for="Cvv" class="form-control" required data-inputmask="'mask': '999'" placeholder="">
+        </div>
+        <button type="submit">Оплатить</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-inputmask]').inputmask();
+        });
+    </script>
+</div>

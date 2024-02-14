@@ -37,15 +37,9 @@ namespace CoreBot1.Dialogs
                 var card = new HeroCard
                 {
                     Title = game.Name,
-                    Subtitle = $"Платформа: {game.Channel}",
+                    Subtitle = $"Канал: {game.Channel}",
                     Buttons = new List<CardAction>
                 {
-                    new CardAction
-                    {
-                        Type = ActionTypes.ImBack,
-                        Title = "Удалить",
-                        Value = $"addkey_{game.Id}"  // Значение, которое будет отправлено обработчику команды
-                    },
                     new CardAction
                     {
                         Type = ActionTypes.ImBack,

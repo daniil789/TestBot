@@ -44,16 +44,19 @@ namespace CoreBot1
             });
 
             // Регистрация репозитория и сервиса для работы с пользователями
-            
+
             // Регистрация репозитория и сервиса для работы с играми
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IKeyRepository, KeyRepository>();
-            services.AddScoped<IKeyService, KeyService>(); 
+            services.AddScoped<IKeyService, KeyService>();
             // Create the Bot Framework Authentication to be used with the Bot Adapter.
             services.AddSingleton<BotFrameworkAuthentication, ConfigurationBotFrameworkAuthentication>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             // Create the Bot Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
@@ -80,6 +83,8 @@ namespace CoreBot1
             services.AddTransient<IBot, GameBot>();
             // Добавление DialogSet
             services.AddSingleton(new DialogSet());
+
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +104,13 @@ namespace CoreBot1
                 {
                     endpoints.MapControllers();
                 });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             // app.UseHttpsRedirection();
         }

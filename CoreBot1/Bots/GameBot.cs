@@ -23,7 +23,7 @@ public class GameBot : ActivityHandler
     private readonly IUserService _userService;
 
     public GameBot(ConversationState conversationState, UserState userState, IConfiguration configuration
-                 , IGameService gameService, IKeyService keyService, IUserService userService)
+                 , IGameService gameService, IKeyService keyService, IUserService userService, IOrderService orderService)
     {
         _conversationState = conversationState;
         _userState = userState;
@@ -31,11 +31,12 @@ public class GameBot : ActivityHandler
         _dialogs = new DialogSet(_conversationState.CreateProperty<DialogState>(nameof(DialogState)));
 
         _dialogs.Add(new AddGameDialog(gameService));
-        _dialogs.Add(new GetAllGamesDialog(gameService));
+        _dialogs.Add(new GetAllGamesDialog(gameService, userService));
         _dialogs.Add(new AddKeyDialog(keyService));
         _dialogs.Add(new GetKeysDialog(keyService));
         _dialogs.Add(new GetUsersDialog(userService));
-        _dialogs.Add(new SearchGameDialog(gameService));
+        _dialogs.Add(new SearchGameDialog(gameService, userService));
+        _dialogs.Add(new BuyKeyDialog(orderService));
     }
 
     public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
@@ -65,6 +66,12 @@ public class GameBot : ActivityHandler
                 {
                     var gameId = int.Parse(userMessage.Replace("addkey_", ""));
                     await dialogContext.BeginDialogAsync(nameof(AddKeyDialog), new GameOption { GameId = gameId });
+                }
+
+                if (userMessage.StartsWith("buykey_"))
+                {
+                    var gameId = int.Parse(userMessage.Replace("buykey_", ""));
+                    await dialogContext.BeginDialogAsync(nameof(BuyKeyDialog), new GameOption { GameId = gameId });
                 }
 
                 if (userMessage.StartsWith("getkeys_"))

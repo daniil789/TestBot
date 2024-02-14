@@ -14,12 +14,14 @@ namespace CoreBot1.Dialogs
     public class SearchGameDialog : ComponentDialog
     {
         private readonly IGameService _gameService;
+        private readonly IUserService _userService;
         private readonly string _searchString;
 
-        public SearchGameDialog(IGameService gameService)
+        public SearchGameDialog(IGameService gameService, IUserService userService)
             : base(nameof(SearchGameDialog))
         {
             _gameService = gameService;
+            _userService = userService;
 
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -37,17 +39,19 @@ namespace CoreBot1.Dialogs
             var searchString = options.SearchString;
 
             var games = _gameService.SearchGames(searchString);
-
+            var curUser = await _userService.GetUserByIdAsync(stepContext.Context.Activity.From.Id);
             var carouselCards = new List<Attachment>();
             foreach (var game in games)
             {
-                var card = new HeroCard
+                if (curUser.IsAdmin)
                 {
-                    Title = game.Title,
-                    Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
-                    Text = game.Description,
-                    Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
-                    Buttons = new List<CardAction>
+                    var card = new HeroCard
+                    {
+                        Title = game.Title,
+                        Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
+                        Text = game.Description,
+                        Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
+                        Buttons = new List<CardAction>
                 {
                     new CardAction
                     {
@@ -63,9 +67,32 @@ namespace CoreBot1.Dialogs
                     },
                 }
 
-                };
+                    };
 
-                carouselCards.Add(card.ToAttachment());
+                    carouselCards.Add(card.ToAttachment());
+                }
+                else
+                {
+                    var card = new HeroCard
+                    {
+                        Title = game.Title,
+                        Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
+                        Text = game.Description,
+                        Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
+                        Buttons = new List<CardAction>
+                {
+                    new CardAction
+                    {
+                        Type = ActionTypes.ImBack,
+                        Title = "Приобрести ключ",
+                        Value = $"buykey_{game.Id}"  // Значение, которое будет отправлено обработчику команды
+                    },
+                }
+
+                    };
+
+                    carouselCards.Add(card.ToAttachment());
+                }
             }
 
             var reply = MessageFactory.Carousel(carouselCards);
