@@ -9,7 +9,7 @@ namespace CoreBot.BLL.Dto
     public class OrderDto
     {
         public string UserId { get; set; }
-        public int KeyId { get; set; }
+        public int GameId { get; set; }
         public DateTime OrderDate { get; set; }
     }
 }

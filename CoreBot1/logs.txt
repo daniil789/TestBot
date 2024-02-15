@@ -1,1 +1,84 @@
-The process cannot access the file 'D:\CoreBot1\CoreBot1\LogsRequst' because it is being used by another process.
+The process cannot access the file 'D:\CoreBot1\CoreBot1\LogsRequst' because it is being used by another process.   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at UserRepository.AddUserIfNotExistAsync(User user) in D:\CoreBot1\CoreBot.DAL\Repositories\UserRepository .cs:line 54
+   at UserService.AddUserIfNotExistAsync(String userId, String name, String channel) in D:\CoreBot1\CoreBot.BLL\Services\UserService.cs:line 50
+   at GameBot.OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Bots\GameBot.cs:line 54
+   at Microsoft.Bot.Builder.MiddlewareSet.ReceiveActivityWithStatusAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.BotAdapter.RunPipelineAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)   at CoreBot.BLL.Services.OrderService.BuyKeyAsync(OrderDto orderDto) in D:\CoreBot1\CoreBot.BLL\Services\OrderService .cs:line 27
+   at CoreBot1.Dialogs.BuyKeyDialog.AddKeyStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 56
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.ResumeDialogAsync(DialogContext dc, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallStepContext.NextAsync(Object result, CancellationToken cancellationToken)
+   at CoreBot1.Dialogs.BuyKeyDialog.AskKeyCountStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 35
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.BeginDialogAsync(DialogContext dc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.ComponentDialog.BeginDialogAsync(DialogContext outerDc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at GameBot.OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Bots\GameBot.cs:line 80
+   at Microsoft.Bot.Builder.MiddlewareSet.ReceiveActivityWithStatusAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.BotAdapter.RunPipelineAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)   at CoreBot.BLL.Services.OrderService.BuyKeyAsync(OrderDto orderDto) in D:\CoreBot1\CoreBot.BLL\Services\OrderService .cs:line 27
+   at CoreBot1.Dialogs.BuyKeyDialog.AddKeyStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 56
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.ResumeDialogAsync(DialogContext dc, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallStepContext.NextAsync(Object result, CancellationToken cancellationToken)
+   at CoreBot1.Dialogs.BuyKeyDialog.AskKeyCountStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 35
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.BeginDialogAsync(DialogContext dc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.ComponentDialog.BeginDialogAsync(DialogContext outerDc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at GameBot.OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Bots\GameBot.cs:line 80
+   at Microsoft.Bot.Builder.MiddlewareSet.ReceiveActivityWithStatusAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.BotAdapter.RunPipelineAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)   at CoreBot.BLL.Services.OrderService.BuyKeyAsync(OrderDto orderDto) in D:\CoreBot1\CoreBot.BLL\Services\OrderService .cs:line 27
+   at CoreBot1.Dialogs.BuyKeyDialog.AddKeyStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 56
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.ResumeDialogAsync(DialogContext dc, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallStepContext.NextAsync(Object result, CancellationToken cancellationToken)
+   at CoreBot1.Dialogs.BuyKeyDialog.AskKeyCountStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 35
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.BeginDialogAsync(DialogContext dc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.ComponentDialog.BeginDialogAsync(DialogContext outerDc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at GameBot.OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Bots\GameBot.cs:line 80
+   at Microsoft.Bot.Builder.MiddlewareSet.ReceiveActivityWithStatusAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.BotAdapter.RunPipelineAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at OrderRepository.BuyKeyAsync(Order order) in D:\CoreBot1\CoreBot.DAL\Repositories\OrderRepository.cs:line 16
+   at CoreBot.BLL.Services.OrderService.BuyKeyAsync(OrderDto orderDto) in D:\CoreBot1\CoreBot.BLL\Services\OrderService .cs:line 35
+   at CoreBot1.Dialogs.BuyKeyDialog.AddKeyStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 56
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.ResumeDialogAsync(DialogContext dc, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallStepContext.NextAsync(Object result, CancellationToken cancellationToken)
+   at CoreBot1.Dialogs.BuyKeyDialog.AskKeyCountStep(WaterfallStepContext stepContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Dialogs\BuyKeyDialog.cs:line 35
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.OnStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.RunStepAsync(DialogContext dc, Int32 index, DialogReason reason, Object result, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.WaterfallDialog.BeginDialogAsync(DialogContext dc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.ComponentDialog.BeginDialogAsync(DialogContext outerDc, Object options, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.Dialogs.DialogContext.BeginDialogAsync(String dialogId, Object options, CancellationToken cancellationToken)
+   at GameBot.OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken) in D:\CoreBot1\CoreBot1\Bots\GameBot.cs:line 80
+   at Microsoft.Bot.Builder.MiddlewareSet.ReceiveActivityWithStatusAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)
+   at Microsoft.Bot.Builder.BotAdapter.RunPipelineAsync(ITurnContext turnContext, BotCallbackHandler callback, CancellationToken cancellationToken)

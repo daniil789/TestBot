@@ -18,4 +18,7 @@ public interface IGameRepository
     void DeleteGame(int gameId);
 
     IEnumerable<Game> SearchGames(string searchString);
+
+    IEnumerable<Game> GetGamesByPriceRange(int minPrice, int maxPrice);
 }
+

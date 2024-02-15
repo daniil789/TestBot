@@ -16,6 +16,7 @@ namespace CoreBot.BLL.Interfaces
         void UpdateGame(GameDto gameDto);
         void DeleteGame(int gameId);
         IEnumerable<GameDto> SearchGames(string searchString);
+        IEnumerable<GameDto> GetGamesByPriceRange(int minPrice, int maxPrice);
     }
 
 }

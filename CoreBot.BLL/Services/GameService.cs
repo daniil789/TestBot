@@ -59,6 +59,7 @@ namespace CoreBot.BLL.Services
                     Id = game.Id,
                     Title = game.Title,
                     Genre = game.Genre,
+                    Description = game.Description,
                     Developer = game.Developer,
                     Platform = game.Platform,
                     Price = game.Price,
@@ -85,6 +86,7 @@ namespace CoreBot.BLL.Services
             {
                 Id = gameDto.Id,
                 Title = gameDto.Title,
+                Description = gameDto.Description,
                 Genre = gameDto.Genre,
                 Developer = gameDto.Developer,
                 Platform = gameDto.Platform,
@@ -96,6 +98,12 @@ namespace CoreBot.BLL.Services
         public IEnumerable<GameDto> SearchGames(string searchString)
         {
             var games = _gameRepository.SearchGames(searchString);
+            return MapToGameDtoList(games);
+        }
+
+        public IEnumerable<GameDto> GetGamesByPriceRange(int minPrice, int maxPrice)
+        {
+            var games = _gameRepository.GetGamesByPriceRange(minPrice, maxPrice);
             return MapToGameDtoList(games);
         }
     }

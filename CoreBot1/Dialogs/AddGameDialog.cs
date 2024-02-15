@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using CoreBot.BLL;
-using CoreBot.BLL.Dto;
+﻿using CoreBot.BLL.Dto;
 using CoreBot.BLL.Interfaces;
-using CoreBot.DAL.Models;
-using HtmlAgilityPack;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class AddGameDialog : ComponentDialog
 {

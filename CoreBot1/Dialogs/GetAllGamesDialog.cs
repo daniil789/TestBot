@@ -1,12 +1,11 @@
 ﻿using CoreBot.BLL.Interfaces;
-using Microsoft.Bot.Builder.Dialogs;
+using HtmlAgilityPack;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
-using HtmlAgilityPack;
-using System;
+using System.Threading.Tasks;
 
 namespace CoreBot1.Dialogs
 {
@@ -42,7 +41,7 @@ namespace CoreBot1.Dialogs
                     var card = new HeroCard
                     {
                         Title = game.Title,
-                        Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
+                        Subtitle = $"Платформа: {game.Platform}, Разработчик: {game.Developer} Цена: {game.Price}",
                         Text = game.Description,
                         Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
                         Buttons = new List<CardAction>
@@ -50,8 +49,15 @@ namespace CoreBot1.Dialogs
                     new CardAction
                     {
                         Type = ActionTypes.ImBack,
-                        Title = "Добавить ключ",
+                        Title = "Добавить ключ вручную",
                         Value = $"addkey_{game.Id}"  // Значение, которое будет отправлено обработчику команды
+                    },
+
+                     new CardAction
+                    {
+                        Type = ActionTypes.ImBack,
+                        Title = "Добавить ключи автоматически",
+                        Value = $"addkeys_{game.Id}"  // Значение, которое будет отправлено обработчику команды
                     },
                     new CardAction
                     {
@@ -70,7 +76,7 @@ namespace CoreBot1.Dialogs
                     var card = new HeroCard
                     {
                         Title = game.Title,
-                        Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
+                        Subtitle = $"Платформа: {game.Platform}, Разработчик: {game.Developer} Цена: {game.Price}",
                         Text = game.Description,
                         Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
                         Buttons = new List<CardAction>

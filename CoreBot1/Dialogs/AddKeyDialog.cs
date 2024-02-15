@@ -1,13 +1,10 @@
-﻿using CoreBot.BLL.Interfaces;
+﻿using CoreBot.BLL.Dto;
+using CoreBot.BLL.Interfaces;
+using CoreBot1.Options;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Schema;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
-using CoreBot.BLL.Dto;
-using CoreBot.BLL.Services;
-using CoreBot1.Options;
+using System.Threading.Tasks;
 
 namespace CoreBot1.Dialogs
 {
@@ -53,7 +50,7 @@ namespace CoreBot1.Dialogs
 
             };
 
- 
+
             await _keyService.AddKeyAsync(keyDto);
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text("Ключ добавлен!"), cancellationToken);

@@ -48,9 +48,17 @@ public class GameRepository : IGameRepository
             .Where(game =>
                 game.Title.Contains(searchString) ||
                 game.Genre.Contains(searchString) ||
+                game.Description.Contains(searchString) ||
                 game.Developer.Contains(searchString) ||
                 game.Platform.Contains(searchString))
             .ToList();
         return matchingGames;
+    }
+
+    public IEnumerable<Game> GetGamesByPriceRange(int minPrice, int maxPrice)
+    {
+        return _dbContext.Games
+            .Where(game => game.Price >= minPrice && game.Price <= maxPrice)
+            .ToList();
     }
 }

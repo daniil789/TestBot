@@ -1,13 +1,12 @@
 ﻿using CoreBot.BLL.Interfaces;
-using Microsoft.Bot.Builder.Dialogs;
+using CoreBot1.Options;
+using HtmlAgilityPack;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
-using HtmlAgilityPack;
-using System;
-using CoreBot1.Options;
+using System.Threading.Tasks;
 
 namespace CoreBot1.Dialogs
 {
@@ -48,7 +47,7 @@ namespace CoreBot1.Dialogs
                     var card = new HeroCard
                     {
                         Title = game.Title,
-                        Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
+                        Subtitle = $"Платформа: {game.Platform}, Разработчик: {game.Developer} Цена: {game.Price}",
                         Text = game.Description,
                         Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
                         Buttons = new List<CardAction>
@@ -76,7 +75,7 @@ namespace CoreBot1.Dialogs
                     var card = new HeroCard
                     {
                         Title = game.Title,
-                        Subtitle = $"Платформа: {game.Platform}, Разработчи: {game.Developer}",
+                        Subtitle = $"Платформа: {game.Platform}, Разработчик: {game.Developer} Цена: {game.Price}",
                         Text = game.Description,
                         Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
                         Buttons = new List<CardAction>

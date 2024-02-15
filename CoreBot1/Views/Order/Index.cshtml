@@ -4,8 +4,6 @@
     ViewData["Title"] = "Оплата";
 }
 
- 
-
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -62,20 +60,20 @@
 <div class="form-container">
     <form asp-action="ProcessPayment" method="post">
         <div class="form-group">
-            <label asp-for="CardOwner"></label>
-            <input asp-for="CardOwner" class="form-control" required>
+            <label asp-for="CardNumber">Номер карты:</label>
+            <input asp-for="CardNumber" class="form-control" required data-inputmask="'mask': '9999 9999 9999 9999'" placeholder="Введите номер карты">
         </div>
         <div class="form-group">
-            <label asp-for="CardNumber"></label>
-            <input asp-for="CardNumber" class="form-control" required data-inputmask="'mask': '9999 9999 9999 9999'" placeholder="">
+            <label asp-for="CardOwner">Владелец карты:</label>
+            <input asp-for="CardOwner" class="form-control" required placeholder="Введите владельца карты">
         </div>
         <div class="form-group">
-            <label asp-for="ExpiryDate"></label>
-            <input asp-for="ExpiryDate" class="form-control" required data-inputmask="'mask': '99/99'" placeholder="">
+            <label asp-for="ExpiryDate">Срок действия:</label>
+            <input asp-for="ExpiryDate" class="form-control" required data-inputmask="'mask': '99/99'" placeholder="Введите срок действия (MM/YY)">
         </div>
         <div class="form-group">
-            <label asp-for="Cvv"></label>
-            <input asp-for="Cvv" class="form-control" required data-inputmask="'mask': '999'" placeholder="">
+            <label asp-for="Cvv">CVV:</label>
+            <input asp-for="Cvv" class="form-control" required data-inputmask="'mask': '999'" placeholder="Введите CVV">
         </div>
         <button type="submit">Оплатить</button>
     </form>

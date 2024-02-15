@@ -1,23 +1,27 @@
 ﻿using CoreBot.BLL.Interfaces;
-using Microsoft.Bot.Builder.Dialogs;
+using CoreBot1.Options;
+using HtmlAgilityPack;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
-using HtmlAgilityPack;
-using System;
+using System.Threading.Tasks;
 
 namespace CoreBot1.Dialogs
 {
-    public class GetUsersDialog : ComponentDialog
+    public class GetGamesByPriceRange : ComponentDialog
     {
+        private readonly IGameService _gameService;
         private readonly IUserService _userService;
+        private readonly string _searchString;
 
-        public GetUsersDialog(IUserService userService)
-            : base(nameof(GetUsersDialog))
+        public GetGamesByPriceRange(IGameService gameService, IUserService userService)
+            : base(nameof(GetGamesByPriceRange))
         {
+            _gameService = gameService;
             _userService = userService;
+
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -29,32 +33,35 @@ namespace CoreBot1.Dialogs
 
         private async Task<DialogTurnResult> DisplayGamesStep(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var games = await _userService.GetAllUsersAsync();
+            var options = stepContext.Options as PriceOption;
+
+            var games = _gameService.GetGamesByPriceRange(options.MinPrice, options.MaxPrice);
             var curUser = await _userService.GetUserByIdAsync(stepContext.Context.Activity.From.Id);
             var carouselCards = new List<Attachment>();
             foreach (var game in games)
             {
-                if (game.Id != curUser.Id)
+                if (curUser.IsAdmin)
                 {
                     var card = new HeroCard
                     {
-                        Title = game.Name,
-                        Subtitle = $"Канал: {game.Channel}",
+                        Title = game.Title,
+                        Subtitle = $"Платформа: {game.Platform}, Разработчик:  {game.Developer}  Цена:  {game.Price}",
+                        Text = game.Description,
+                        Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
                         Buttons = new List<CardAction>
-                {                    new CardAction
+                {
+                    new CardAction
                     {
                         Type = ActionTypes.ImBack,
-                        Title = "Отправить уведомление",
-                        Value = $"getkeys_{game.Id}"  // Значение, которое будет отправлено обработчику команды
+                        Title = "Добавить ключ",
+                        Value = $"addkey_{game.Id}"  // Значение, которое будет отправлено обработчику команды
                     },
                     new CardAction
                     {
                         Type = ActionTypes.ImBack,
-                        Title = "Выдать права администратора",
+                        Title = "Ключи",
                         Value = $"getkeys_{game.Id}"  // Значение, которое будет отправлено обработчику команды
                     },
-
-
                 }
 
                     };
@@ -65,8 +72,20 @@ namespace CoreBot1.Dialogs
                 {
                     var card = new HeroCard
                     {
-                        Title = game.Name,
-                        Subtitle = $"Канал: {game.Channel}",
+                        Title = game.Title,
+                        Subtitle = $"Платформа: {game.Platform}, Разработчик:  {game.Developer}  Цена:  {game.Price}",
+                        Text = game.Description,
+                        Images = new List<CardImage> { new CardImage(Parse(game.ImageUrl)) },
+                        Buttons = new List<CardAction>
+                {
+                    new CardAction
+                    {
+                        Type = ActionTypes.ImBack,
+                        Title = "Приобрести ключ",
+                        Value = $"buykey_{game.Id}"  // Значение, которое будет отправлено обработчику команды
+                    },
+                }
+
                     };
 
                     carouselCards.Add(card.ToAttachment());

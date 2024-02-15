@@ -7,7 +7,6 @@ using CoreBot.BLL.Interfaces;
 using CoreBot.BLL.Services;
 using CoreBot.DAL.Intefaces;
 using CoreBot.DAL.Repositories;
-using CoreBot1.Bots;
 using CoreBot1.Dialogs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

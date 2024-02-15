@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace CoreBot1.Dialogs
 {
-    public class GetKeysDialog : ComponentDialog
+    public class GetMyKeysDialog : ComponentDialog
     {
-        private IKeyService _keyService;
-        public GetKeysDialog(IKeyService keyService)
-           : base(nameof(GetKeysDialog))
+        private IOrderService _orderService;
+        public GetMyKeysDialog(IOrderService orderService)
+           : base(nameof(GetMyKeysDialog))
         {
-            _keyService = keyService;
+            _orderService = orderService;
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -25,15 +25,12 @@ namespace CoreBot1.Dialogs
         }
         private async Task<DialogTurnResult> DisplayKeysStep(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var options = stepContext.Options as GameOption;
-
-            var gameId = options.GameId;
-            var keys = await _keyService.GetKeysByGameIdAsync(gameId);
+            var orders = await _orderService.GetOrdersByUserIdAsync(stepContext.Context.Activity.From.Id);
 
             string result = string.Empty;
-            foreach (var key in keys)
+            foreach (var order in orders)
             {
-                result += key.KeyValue + "\n";
+                result += order.Key.Game.Title + ": " + order.Key.KeyValue + "\n";
             }
 
             var reply = MessageFactory.Text(result);

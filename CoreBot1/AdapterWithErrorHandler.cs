@@ -23,7 +23,8 @@ namespace CoreBot1
             {
                 // Log any leaked exception from the application.
                 logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
-                File.AppendAllText("logs.txt", exception.Message);
+                File.AppendAllText("logs.txt", exception.StackTrace);
+                await turnContext.SendActivityAsync(exception.Message);
 
                 // Send a message to the user
                 var errorMessageText = "The bot encountered an error or bug.";

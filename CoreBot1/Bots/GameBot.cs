@@ -1,19 +1,18 @@
 ﻿// GameBot.cs
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using CoreBot.BLL.Interfaces;
-using CoreBot.DAL.Models;
+using CoreBot.DAL.Migrations;
 using CoreBot1.Dialogs;
 using CoreBot1.Options;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class GameBot : ActivityHandler
 {
@@ -37,6 +36,9 @@ public class GameBot : ActivityHandler
         _dialogs.Add(new GetUsersDialog(userService));
         _dialogs.Add(new SearchGameDialog(gameService, userService));
         _dialogs.Add(new BuyKeyDialog(orderService));
+        _dialogs.Add(new AddKeysDialog(keyService));
+        _dialogs.Add(new GetGamesByPriceRange(gameService, userService));
+        _dialogs.Add(new GetMyKeysDialog(orderService));
     }
 
     public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
@@ -67,20 +69,25 @@ public class GameBot : ActivityHandler
                     var gameId = int.Parse(userMessage.Replace("addkey_", ""));
                     await dialogContext.BeginDialogAsync(nameof(AddKeyDialog), new GameOption { GameId = gameId });
                 }
-
+                else if (userMessage.StartsWith("addkeys_"))
+                {
+                    var gameId = int.Parse(userMessage.Replace("addkeys_", ""));
+                    await dialogContext.BeginDialogAsync(nameof(AddKeysDialog), new GameOption { GameId = gameId });
+                }
+                else
                 if (userMessage.StartsWith("buykey_"))
                 {
                     var gameId = int.Parse(userMessage.Replace("buykey_", ""));
                     await dialogContext.BeginDialogAsync(nameof(BuyKeyDialog), new GameOption { GameId = gameId });
                 }
 
-                if (userMessage.StartsWith("getkeys_"))
+                else if (userMessage.StartsWith("getkeys_"))
                 {
                     var gameId = int.Parse(userMessage.Replace("getkeys_", ""));
                     await dialogContext.BeginDialogAsync(nameof(GetKeysDialog), new GameOption { GameId = gameId });
                 }
 
-                if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "addgame")
+                else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "addgame")
                 {
                     await dialogContext.BeginDialogAsync(nameof(AddGameDialog));
                 }
@@ -94,11 +101,23 @@ public class GameBot : ActivityHandler
                 }
                 else if (results.Status == DialogTurnStatus.Empty && turnContext.Activity.Text == "Мои ключи")
                 {
-                    await dialogContext.BeginDialogAsync(nameof(GetUsersDialog));
+                    await dialogContext.BeginDialogAsync(nameof(GetMyKeysDialog));
                 }
-                else
+                else if (results.Status == DialogTurnStatus.Empty)
                 {
-                    await dialogContext.BeginDialogAsync(nameof(SearchGameDialog), new CoreBot1.Options.SearchOption { SearchString = turnContext.Activity.Text });
+                    var match = Regex.Match(turnContext.Activity.Text, @"(\d+)\s*-\s*(\d+)");
+
+                    if (match.Success)
+                    {
+                        int minPrice = int.Parse(match.Groups[1].Value);
+                        int maxPrice = int.Parse(match.Groups[2].Value);
+
+                        await dialogContext.BeginDialogAsync(nameof(GetGamesByPriceRange), new CoreBot1.Options.PriceOption { MinPrice = minPrice, MaxPrice = maxPrice });
+                    }
+                    else
+                    {
+                        await dialogContext.BeginDialogAsync(nameof(SearchGameDialog), new CoreBot1.Options.SearchOption { SearchString = turnContext.Activity.Text });
+                    }
                 }
 
                 await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
@@ -115,6 +134,7 @@ public class GameBot : ActivityHandler
         catch (Exception ex)
         {
             File.AppendAllText("log.txt", ex.Message);
+            throw;
         }
     }
 
@@ -134,6 +154,7 @@ public class GameBot : ActivityHandler
             new CardAction { Title = "Пользователи", Type = ActionTypes.PostBack, Value = "Пользователи" },
             new CardAction { Title = "Вывести список игр", Type = ActionTypes.PostBack, Value = "Вывести список игр" },
              new CardAction { Title = "Добавить игру", Type = ActionTypes.PostBack, Value = "addgame" },
+             new CardAction { Title = "Помощь", Type = ActionTypes.PostBack, Value = "addgame" },
             // Добавьте другие ваши кнопки
         },
             };
@@ -147,6 +168,8 @@ public class GameBot : ActivityHandler
             new CardAction { Title = "Мои ключи", Type = ActionTypes.PostBack, Value = "Мои ключи" },
             new CardAction { Title = "Вывести список игр", Type = ActionTypes.PostBack, Value = "Вывести список игр" },
             // Добавьте другие ваши кнопки
+             new CardAction { Title = "Помощь", Type = ActionTypes.PostBack, Value = "addgame" },
+              new CardAction { Title = "Подписаться на рассылки", Type = ActionTypes.PostBack, Value = "addgame" },
         },
             };
         }
